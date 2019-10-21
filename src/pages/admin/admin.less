@@ -1,0 +1,18 @@
+.container{
+  .nav-left{
+    background-color:#001529;
+    color: #ffffff;
+    height: calc(100vh);    /*  calc(100vh)表示占当前（栅格、区域、块）区域的百分之百， 则一定充满整个屏幕  */
+    // height: 100%;             /*  100% 是根据内容，如左侧菜单的实际尺寸，  进行100%扩大， 不一定充满整个屏幕 */
+  }
+  .main{
+    height: calc(100vh);
+    background-color: #f1f3f5;
+    overflow: auto;     /* 保证左侧菜单固定不变，而右边区域随着内容滚动    */
+  }
+  .content{
+    margin: 20px;
+    background-color: white;
+    min-height: calc(76vh);    /* 可以不加，让随着内容的变化进行扩充 */
+  }
+}

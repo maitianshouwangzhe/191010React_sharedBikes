@@ -1,0 +1,46 @@
+.header{
+  background-color: white;
+  .header-top{
+    height: 40px;
+    // 行高与高度一致，表示垂直方向居中
+    line-height: 40px;
+    text-align: right;
+    border-bottom: 1px solid cornflowerblue;
+    padding: 0 40px;
+    .header-quit{
+      padding-right: 0px;
+    }
+  }
+  .header-bottom{
+    padding: 0 40px;
+    height: 40px;
+    line-height: 40px;
+    .header-bottom-left{
+      text-align: center;
+      font-size: 25px;
+      // 伪类选择器
+      &::after{
+        content: '';
+        position: absolute;
+        // 表示正方形的右侧在正中间
+        right: 50%;
+        top:100%;
+        transform: translateX(50%);
+        border-top: 15px solid white;
+        border-right: 20px solid transparent;
+        border-bottom: 20px solid transparent;
+        border-left: 20px solid transparent;
+      }
+    }
+    .header-bottom-right{
+      text-align: right;
+      .right-date{
+        margin-right: 10px;
+      }
+      .weather-img{
+        margin-right: 10px;
+        width: 30px;
+      }
+    }
+  }
+}
