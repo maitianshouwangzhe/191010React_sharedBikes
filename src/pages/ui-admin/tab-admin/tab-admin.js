@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import {Card, Tabs, Icon, Button} from "antd"
+import {Card, Tabs, Icon, Button, message} from "antd"
 
 const { TabPane } = Tabs
 export default class TabAdmin extends Component{
@@ -27,9 +27,12 @@ export default class TabAdmin extends Component{
     }
 
     onChange = activeKey  => {
+        // 字符串拼接
+        message.info('打印输出激活的activeKey为'+ activeKey)
         this.setState({ activeKey })
     }
 
+    // 官方api的指定用法： (targetKey, action): void
     onEdit = (targetKey, action) => {
         // action就是add 或 remove,一次只能一个方法。
         this[action](targetKey)
@@ -53,22 +56,26 @@ export default class TabAdmin extends Component{
     }
 
     // 删除面板
+    // targetKey为想要删除的
+    // activeKey为目前激活打开的
     remove = (targetKey) => {
         let { activeKey } = this.state
         let lastIndex
-        // 循环遍历
+        // 循环遍历查找出，符合条件的
         this.state.panes.forEach((pane, i) => {
             if (pane.key === targetKey) {
                 lastIndex = i - 1
             }
         })
-
+        // 过滤出（key不相等）的Tabs， 即删除了key相等时的Tabs
+        // 过滤后得到一个新的数组
         const panes = this.state.panes.filter(pane => pane.key !== targetKey)
         if (panes.length && activeKey === targetKey) {
             if (lastIndex >= 0) {
                 activeKey = panes[lastIndex].key
             } else {
                 // js不能从后面查找
+                // 当删除第一个Tabs时
                 activeKey = panes[0].key
             }
         }
