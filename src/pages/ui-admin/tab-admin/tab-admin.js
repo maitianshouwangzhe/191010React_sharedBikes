@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import {Card, Tabs, Icon} from "antd"
+import {Card, Tabs, Icon, Button} from "antd"
 
 const { TabPane } = Tabs
 export default class TabAdmin extends Component{
@@ -16,10 +16,11 @@ export default class TabAdmin extends Component{
                 key: '3',
                 //  是否可以关闭， false就是不能关闭
                 closable: false,
-            },
+            }
         ]
 
         this.state = {
+            // 当前 tab 面板的 key
             activeKey: panes[0].key,
             panes,
         }
@@ -30,6 +31,7 @@ export default class TabAdmin extends Component{
     }
 
     onEdit = (targetKey, action) => {
+        // action就是add 或者 remove
         this[action](targetKey)
     }
 
@@ -38,23 +40,30 @@ export default class TabAdmin extends Component{
         const { panes } = this.state
         const activeKey = `newTab${this.newTabIndex++}`
         // 添加一个面板
-        panes.push({ title: `newTab${this.newTabIndex++}`, content: `Content of newTab${this.newTabIndex++}`, key: activeKey })
-        this.setState({ panes, activeKey })
+        panes.push({ title: `newTab${this.newTabIndex}`, content: `Content of newTab${this.newTabIndex}`, key: activeKey })
+        this.setState({
+            panes,
+            activeKey
+        })
     }
 
+    // 删除一个面板
     remove = targetKey => {
         let { activeKey } = this.state
         let lastIndex
+        // 循环遍历
         this.state.panes.forEach((pane, i) => {
             if (pane.key === targetKey) {
                 lastIndex = i - 1
             }
         })
+
         const panes = this.state.panes.filter(pane => pane.key !== targetKey)
         if (panes.length && activeKey === targetKey) {
             if (lastIndex >= 0) {
                 activeKey = panes[lastIndex].key
             } else {
+                // js不能从后面查找
                 activeKey = panes[0].key
             }
         }
@@ -113,6 +122,30 @@ export default class TabAdmin extends Component{
                     className='card-wrap'
                 >
                     <Tabs
+                        defaultActiveKey='2'
+                        onChange={this.onChange}
+                        activeKey={this.state.activeKey}
+                        type="editable-card"
+                        onEdit={this.onEdit}
+                    >
+                        {this.state.panes.map(pane => (
+                            <TabPane tab={pane.title} key={pane.key} closable={pane.closable}>
+                                {pane.content}
+                            </TabPane>
+                        ))}
+                    </Tabs>
+                </Card>
+
+                <Card
+                    title='Tab页签的使用（3）'
+                    className='card-wrap'
+                >
+                    <div style={{ marginBottom: 16 }}>
+                        <Button onClick={this.add}>添加面板</Button>
+                    </div>
+                    <Tabs
+                        defaultActiveKey='3'
+                        hideAdd
                         onChange={this.onChange}
                         activeKey={this.state.activeKey}
                         type="editable-card"
