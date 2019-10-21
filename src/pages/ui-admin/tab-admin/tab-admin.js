@@ -14,7 +14,7 @@ export default class TabAdmin extends Component{
                 title: 'Tab 3',
                 content: 'Content of Tab 3',
                 key: '3',
-                //  是否可以关闭， false就是不能关闭
+                //  是否可以关闭， false则不能关闭
                 closable: false,
             }
         ]
@@ -31,24 +31,29 @@ export default class TabAdmin extends Component{
     }
 
     onEdit = (targetKey, action) => {
-        // action就是add 或者 remove
+        // action就是add 或 remove,一次只能一个方法。
         this[action](targetKey)
     }
 
 
     add = () => {
+        // 取出当前的panes
         const { panes } = this.state
         const activeKey = `newTab${this.newTabIndex++}`
         // 添加一个面板
-        panes.push({ title: `newTab${this.newTabIndex}`, content: `Content of newTab${this.newTabIndex}`, key: activeKey })
+        panes.push({
+            title: `newTab${this.newTabIndex}`,
+            content: `Content of newTab${this.newTabIndex}`,
+            key: activeKey
+        })
         this.setState({
             panes,
             activeKey
         })
     }
 
-    // 删除一个面板
-    remove = targetKey => {
+    // 删除面板
+    remove = (targetKey) => {
         let { activeKey } = this.state
         let lastIndex
         // 循环遍历
@@ -124,7 +129,7 @@ export default class TabAdmin extends Component{
                     <Tabs
                         defaultActiveKey='2'
                         onChange={this.onChange}
-                        activeKey={this.state.activeKey}
+                        activeKey={this.state.activeKey}    /*  一旦有activeKey，则defaultActiveKey不在生效  */
                         type="editable-card"
                         onEdit={this.onEdit}
                     >
@@ -141,7 +146,7 @@ export default class TabAdmin extends Component{
                     className='card-wrap'
                 >
                     <div style={{ marginBottom: 16 }}>
-                        <Button onClick={this.add}>添加面板</Button>
+                        <Button type='primary'  onClick={this.add}>添加面板</Button>
                     </div>
                     <Tabs
                         defaultActiveKey='3'
