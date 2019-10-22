@@ -16,7 +16,6 @@ function headerTitle( state = initHeaderTitle, action) {
 
 
 const currentUser = '麦穗'
-
 function user( state = currentUser, action) {
     switch (action.type) {
         default:
@@ -26,7 +25,7 @@ function user( state = currentUser, action) {
 }
 
 
-// reducer管理着总的状态
+// reducer管理着总的状态, 总的状态是一个对象
 export default combineReducers({
         headerTitle,
         user
