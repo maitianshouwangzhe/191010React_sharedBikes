@@ -15,7 +15,7 @@ export default class TabAdmin extends Component{
                 content: 'Content of Tab 3',
                 key: '3',
                 //  是否可以关闭， false则不能关闭
-                closable: false,
+                // closable: false,
             }
         ]
 
@@ -26,9 +26,10 @@ export default class TabAdmin extends Component{
         }
     }
 
+    // 点击切换activeKey
     onChange = activeKey  => {
         // 字符串拼接
-        message.info('打印输出激活的activeKey为'+ activeKey)
+        message.info('激活的activeKey为'+ activeKey)
         this.setState({ activeKey })
     }
 
@@ -55,13 +56,14 @@ export default class TabAdmin extends Component{
         })
     }
 
-    // 删除面板
+    // 删除用filter()函数
     // targetKey为想要删除的
     // activeKey为目前激活打开的
     remove = (targetKey) => {
         let { activeKey } = this.state
         let lastIndex
         // 循环遍历查找出，符合条件的
+        // i 从0开始
         this.state.panes.forEach((pane, i) => {
             if (pane.key === targetKey) {
                 lastIndex = i - 1
