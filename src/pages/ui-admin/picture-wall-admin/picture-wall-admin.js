@@ -22,7 +22,6 @@ export default class PictureWallAdmin extends Component{
                 <Meta title='图片画廊' description={item}/>
             </Card>
         ))
-        console.log(imgList)
         return (
             <div>
                 <Row gutter={40}>
