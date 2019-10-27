@@ -1,6 +1,6 @@
 import React, {Component} from 'react'
 
-export default class RotaryPlantingMap extends Component{
+export default class CarouselPhoto extends Component{
 
     render() {
         return (

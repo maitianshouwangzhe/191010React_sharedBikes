@@ -12,7 +12,7 @@ import NotificationAdmin from "./pages/ui-admin/notification-admin/notification-
 import MessageAdmin from "./pages/ui-admin/message-admin/message-admin";
 import TabAdmin from "./pages/ui-admin/tab-admin/tab-admin";
 import PictureWallAdmin from "./pages/ui-admin/picture-wall-admin/picture-wall-admin";
-import RotaryPlantingMap from "./pages/ui-admin/rotary-planting-map/rotary-planting-map";
+import CarouselPhoto from "./pages/ui-admin/carousel-photo/carousel-photo";
 import LoginAdmin from "./pages/form-admin/login-admin/login-admin";
 import RegisterAdmin from "./pages/form-admin/register-admin/register-admin";
 import BasicTable from "./pages/table-admin/basic-table/basic-table";
@@ -52,7 +52,7 @@ export default class HRouter extends Component{
                                     <Route path='/ui/messages' component={MessageAdmin}/>
                                     <Route path='/ui/tabs' component={TabAdmin}/>
                                     <Route path='/ui/gallery' component={PictureWallAdmin}/>
-                                    <Route path='/ui/carousel' component={RotaryPlantingMap}/>
+                                    <Route path='/ui/carousel' component={CarouselPhoto}/>
                                     <Route path='/form/login' component={LoginAdmin}/>
                                     <Route path='/form/reg' component={RegisterAdmin}/>
                                     <Route path='/table/basic' component={BasicTable}/>
