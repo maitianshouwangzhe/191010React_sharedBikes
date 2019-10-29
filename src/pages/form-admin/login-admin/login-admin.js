@@ -45,18 +45,6 @@ class LoginAdmin extends Component{
         // 仅在触摸字段后显示错误
         const usernameError = isFieldTouched('username') && getFieldError('username')
         const passwordError = isFieldTouched('password') && getFieldError('password')
-        // 对form表单布局进行设置
-        // 响应式布局
-        const formItemLayout = {
-            labelCol: {
-                xs: { span: 24 },
-                sm: { span: 8 },
-            },
-            wrapperCol: {
-                xs: { span: 15 },
-                sm: { span: 16 },
-            },
-        }
 
         return (
             <div>
@@ -93,7 +81,7 @@ class LoginAdmin extends Component{
 
 
                 <Card title='普通（水平）的登录框' className='card-wrap'>
-                    <Form onSubmit={this.handleSubmit2} className="login-form" {...formItemLayout}>
+                    <Form onSubmit={this.handleSubmit2} className="login-form">
                         <Form.Item>
                             {getFieldDecorator('username', {
                                 rules: [{ required: true, message: '用户名必须输入！' }],
