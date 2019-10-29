@@ -12,6 +12,7 @@ import {
     Button,
     AutoComplete, Card,
 } from 'antd'
+import LinkButton from "../../../components/link-button/link-button";
 
 
 const { Option } = Select
@@ -142,7 +143,7 @@ const residences = [
         return (
             <Card title='注册表单'>
                 <Form {...formItemLayout} onSubmit={this.handleSubmit}>
-                    <Form.Item label="E-mail">
+                    <Form.Item label="邮箱">
                         {getFieldDecorator('email', {
                             rules: [
                                 {
@@ -156,7 +157,7 @@ const residences = [
                             ],
                         })(<Input />)}
                     </Form.Item>
-                    <Form.Item label="Password" hasFeedback>
+                    <Form.Item label="密码" hasFeedback>
                         {getFieldDecorator('password', {
                             rules: [
                                 {
@@ -169,7 +170,7 @@ const residences = [
                             ],
                         })(<Input.Password />)}
                     </Form.Item>
-                    <Form.Item label="Confirm Password" hasFeedback>
+                    <Form.Item label="确认密码" hasFeedback>
                         {getFieldDecorator('confirm', {
                             rules: [
                                 {
@@ -186,17 +187,17 @@ const residences = [
                         label={
                             <span>
                                 <span style={{marginRight: 5}}>Nickname</span>
-                                <Tooltip title="What do you want others to call you?">
+                                <Tooltip title="你希望别人怎么称呼你？">
                                     <Icon type="question-circle-o" />
                                 </Tooltip>
                             </span>
                         }
                     >
-                        {getFieldDecorator('nickname', {
+                        {getFieldDecorator('昵称', {
                             rules: [{ required: true, message: 'Please input your nickname!', whitespace: true }],
                         })(<Input />)}
                     </Form.Item>
-                    <Form.Item label="Habitual Residence">
+                    <Form.Item label="常居住地">
                         {getFieldDecorator('residence', {
                             initialValue: ['zhejiang', 'hangzhou', 'xihu'],
                             rules: [
@@ -204,12 +205,12 @@ const residences = [
                             ],
                         })(<Cascader options={residences} />)}
                     </Form.Item>
-                    <Form.Item label="Phone Number">
+                    <Form.Item label="手机号">
                         {getFieldDecorator('phone', {
                             rules: [{ required: true, message: 'Please input your phone number!' }],
                         })(<Input addonBefore={prefixSelector} style={{ width: '100%' }} />)}
                     </Form.Item>
-                    <Form.Item label="Website">
+                    <Form.Item label="网站">
                         {getFieldDecorator('website', {
                             rules: [{ required: true, message: 'Please input website!' }],
                         })(
@@ -222,15 +223,15 @@ const residences = [
                             </AutoComplete>,
                         )}
                     </Form.Item>
-                    <Form.Item label="Captcha" extra="We must make sure that your are a human.">
+                    <Form.Item label="验证码" extra="我们必须确保不是机器人.">
                         <Row gutter={8}>
                             <Col span={12}>
                                 {getFieldDecorator('captcha', {
-                                    rules: [{ required: true, message: 'Please input the captcha you got!' }],
+                                    rules: [{ required: true, message: '请输入验证码' }],
                                 })(<Input />)}
                             </Col>
                             <Col span={12}>
-                                <Button>Get captcha</Button>
+                                <Button>获取验证码</Button>
                             </Col>
                         </Row>
                     </Form.Item>
@@ -239,13 +240,13 @@ const residences = [
                             valuePropName: 'checked',
                         })(
                             <Checkbox>
-                                I have read the <a href="">agreement</a>
-                            </Checkbox>,
+                                我已经阅读<LinkButton>协议</LinkButton>
+                            </Checkbox>
                         )}
                     </Form.Item>
                     <Form.Item {...tailFormItemLayout}>
                         <Button type="primary" htmlType="submit">
-                            Register
+                            注册
                         </Button>
                     </Form.Item>
                 </Form>
@@ -253,5 +254,6 @@ const residences = [
         )
     }
 }
+
 
 export default Form.create()(RegisterAdmin)
