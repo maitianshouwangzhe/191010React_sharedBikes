@@ -10,7 +10,7 @@ import {
     Col,
     Checkbox,
     Button,
-    AutoComplete, Card,Radio, InputNumber, Switch, DatePicker, TimePicker, Upload
+    AutoComplete, Card,Radio, InputNumber, Switch, DatePicker, TimePicker, Upload, message
 } from 'antd'
 import LinkButton from "../../../components/link-button/link-button";
 import moment from "moment";
@@ -63,6 +63,7 @@ const address = [
         confirmDirty: false,
         autoCompleteResult: [],
         sex:'woman',
+        loading: false,
     }
 
 
@@ -71,7 +72,9 @@ const address = [
         e.preventDefault()
         this.props.form.validateFieldsAndScroll((err, values) => {
             if (!err) {
-                console.log('Received values of form: ', values)
+                // 将收集的数据全部转化为字符串
+                const user = JSON.stringify(values)
+                console.log('Received values of form: ', user)
             }
         })
     }
@@ -101,6 +104,53 @@ const address = [
         this.setState({ autoCompleteResult })
     }
 
+
+     normFile = e => {
+         console.log('Upload event:', e);
+         if (Array.isArray(e)) {
+             return e;
+         }
+         return e && e.fileList;
+     }
+
+
+     getBase64=(img, callback)=> {
+         const reader = new FileReader();
+         reader.addEventListener('load', () => callback(reader.result));
+         reader.readAsDataURL(img);
+     }
+
+     // 上传之前的回调
+     beforeUpload = (file)=> {
+         const isJpgOrPng = file.type === 'image/jpeg' || file.type === 'image/png';
+         if (!isJpgOrPng) {
+             message.error('仅能上传JPG或PNG格式的图片!');
+         }
+         // 判断图片是否小于2MB
+         const isLt2M = file.size / 1024 / 1024 < 2;
+         if (!isLt2M) {
+             message.error('图片必须要小于 2MB!');
+         }
+         return isJpgOrPng && isLt2M;
+     }
+
+     handleChange = info => {
+         if (info.file.status === 'uploading') {
+             this.setState({ loading: true });
+             return;
+         }
+         if (info.file.status === 'done') {
+             // Get this url from response in real world.
+             this.getBase64(info.file.originFileObj, imageUrl =>
+                 this.setState({
+                     // 更改状态
+                     userImg: imageUrl,
+                     loading: false,
+                 }),
+             );
+         }
+     };
+
     render() {
         const { getFieldDecorator } = this.props.form
         const { autoCompleteResult } = this.state
@@ -123,6 +173,7 @@ const address = [
                 },
                 sm: {
                     span: 16,
+                    //  偏移的部分
                     offset: 8,
                 },
             },
@@ -140,11 +191,18 @@ const address = [
             <AutoCompleteOption key={website}>{website}</AutoCompleteOption>
         ))
 
+        const uploadButton = (
+            <div>
+                <Icon type={this.state.loading ? 'loading' : 'plus'} />
+                <div className="ant-upload-text">上传图片</div>
+            </div>
+        )
+
         return (
             <Card title='注册表单'>
                 <Form {...formItemLayout} onSubmit={this.handleSubmit}>
                     <Form.Item label="用户名">
-                        {getFieldDecorator('username', {
+                        {getFieldDecorator('userName', {
                             rules: [
                                 {
                                     required: true,
@@ -266,7 +324,7 @@ const address = [
                         {getFieldDecorator('workAddress',{
                             initialValue: '陕西省西安市',
                         })(
-                            <TextArea autoSize={{minRows: 2, maxRows: 6 }} />
+                            <TextArea autosize={{minRows: 2, maxRows: 6 }} />
                             )
                         }
                     </Form.Item>
@@ -282,18 +340,23 @@ const address = [
                         {getFieldDecorator('phone')(<Input addonBefore={prefixSelector} style={{ width: '100%' }} />)}
                     </Form.Item>
 
-                    <Form.Item label="头像" extra="上传你的头像">
+                    <Form.Item label="头像">
                         {getFieldDecorator('userImg', {
                             valuePropName: 'fileList',
                             getValueFromEvent: this.normFile,
                         })(
                             <Upload
-                                name="logo"
-                                action="/upload.do"
+                                name="userImg"
                                 listType="picture-card"
+                                className="avatar-uploader"
+                                accept="image/*, .pdf"    /*   仅仅支持 上传图片 和 pdf文件   */
+                                action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
+                                showUploadList={false}
+                                beforeUpload={this.beforeUpload}
+                                onChange={this.handleChange}
                             >
-                                上传图片
-                            </Upload>,
+                                {this.state.userImg ? <img src={this.state.userImg} alt="userImg" style={{ width: '100%' }} /> : uploadButton}
+                            </Upload>
                         )}
                     </Form.Item>
 
@@ -316,7 +379,7 @@ const address = [
                                 })(<Input />)}
                             </Col>
                             <Col span={12}>
-                                <Button>获取验证码</Button>
+                                <Button type='primary'>获取验证码</Button>
                             </Col>
                         </Row>
                     </Form.Item>
