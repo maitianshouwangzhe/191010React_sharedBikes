@@ -40,13 +40,14 @@ export default class Axios {
                 url: options.url,
                 method: 'get',
                 baseURL: baseUrl,
-                // timeout: 5000,
-                params: (options.data && options.data.params) || ''
+                // timeout: 5000,           /*  超时  */
+                params: (options.data && options.data.params) || ''      /*    配置参数  */
             }).then( response => {
-                // 响应的状态
+                // 响应
                 if (response.status === 200){
                     const result = response.data
                     if (result.code === 0){
+                        // 转为字符串格式
                         resolve(result)
                     } else {
                         Modal.info({
