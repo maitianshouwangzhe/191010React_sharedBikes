@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import {Card, Table} from "antd";
+import {Card, Table, Modal} from "antd";
 import axios from '../../../axios/index'
 export default class BasicTable extends Component{
 
@@ -7,6 +7,7 @@ export default class BasicTable extends Component{
         // 初始数据为空数组
         dataSource: [],
         dataSource2: [],
+        user: {},
     }
 
 
@@ -27,13 +28,13 @@ export default class BasicTable extends Component{
                 title: '性别',
                 key: 'sex',
                 dataIndex: 'sex',
-                render: sex => sex ==='1' ? '男' : '女'
+                render: sex => sex*1 === 1 ? '男' : '女'
             },
             {
                 title: '状态',
                 key: 'currentState',
                 dataIndex: 'currentState',
-                render(state){
+                render(currentState){
                     let config  = {
                         '1':'咸鱼一条',
                         '2':'风华浪子',
@@ -41,7 +42,7 @@ export default class BasicTable extends Component{
                         '4':'百度FE',
                         '5':'创业者'
                     }
-                    return config[state];
+                    return config[currentState];
                 }
             },
             {
@@ -125,6 +126,10 @@ export default class BasicTable extends Component{
     request = () => {
         axios.ajax({
             url: '/table/basic',
+            data: {
+                 params:{  page:1 },
+                isShowLoading: false,  /*  不显示loading   */
+            }
         }).then( res => {
             if (res.code === 0){
                 this.setState({
@@ -134,9 +139,43 @@ export default class BasicTable extends Component{
         })
     }
 
+    onRow = (user) => {
+        return {
+            onClick: event => {
+                console.log('选中该行的数据', event)
+                this.setState({user})
+            }
+        }
+    }
+
+    onRowClick = (record,index)=>{
+        // index可以是一个数组
+        let selectKey = [index];
+        Modal.info({
+            title:'信息',
+            content:`用户名：${record.userName},用户爱好：${record.like}`
+        })
+        this.setState({
+            selectedRowKeys:selectKey,
+            selectedItem: record
+        })
+    }
+
 
     render() {
         const {dataSource, dataSource2} = this.state
+
+        const selectedRowKeys = this.state.selectedRowKeys;
+        const rowSelection1 = {
+            type:'radio', /*   一旦设置radio， 则右上角为灰色    */
+            selectedRowKeys
+        }
+
+        //  配置表格是否有 选择 功能
+        const rowSelection2 = {
+            type: "checkbox",      /* 一旦设置checkbox， 则右上角出现方框    */
+        }
+
         return (
             <div>
                 <Card title='基础表格' className='card-wrap'>
@@ -148,11 +187,46 @@ export default class BasicTable extends Component{
                     />
                 </Card>
 
-                <Card title='动态数据表格（Easy Mock数据）' className='card-wrap'>
+                <Card title='Easy Mock数据' className='card-wrap'>
                     <Table
                         rowKey='id'
                         dataSource={dataSource2}
                         columns={this.columns}
+                    />
+                </Card>
+
+                <Card title='Mock数据（单选radio）' className='card-wrap'>
+                    <Table
+                        bordered
+                        rowKey='id'
+                        dataSource={dataSource2}
+                        columns={this.columns}
+                        rowSelection={rowSelection1}   /*  配置  表格的行 是否可进行选择  */
+                        onRow={(record,index) => {
+                            return {
+                                onClick:() => {
+                                    this.onRowClick(record,index);
+                                }
+                            }
+                        }}            /*  点击某一行   */
+                    />
+                </Card>
+
+
+                <Card title='Mock数据（多选checkbox）' className='card-wrap'>
+                    <Table
+                        bordered
+                        rowKey='id'
+                        dataSource={dataSource2}
+                        columns={this.columns}
+                        rowSelection={rowSelection2}   /*  配置  表格的行 是否可进行选择  */
+                        onRow={(record,index) => {
+                            return {
+                                onClick:() => {
+                                    this.onRowClick(record,index);
+                                }
+                            }
+                        }}            /*  点击某一行   */
                     />
                 </Card>
             </div>

@@ -34,7 +34,13 @@ export default class Axios {
 
     // 基于axios封装的ajax函数
     static ajax(options){
-        const baseUrl = 'https://www.easy-mock.com/mock/5db92c42f94af26320296a42/mockapi'
+        // 显示loading状态
+        let loading;
+        if (options.data && options.data.isShowLoading !== false){
+            loading = document.getElementById('ajaxLoading');
+            loading.style.display = 'block';
+        }
+        const baseUrl = 'https://www.easy-mock.com/mock/5db92c42f94af26320296a42/sharedBikeapi'
         return new Promise((resolve, reject) => {
             axios({
                 url: options.url,
@@ -43,11 +49,15 @@ export default class Axios {
                 // timeout: 5000,           /*  超时  */
                 params: (options.data && options.data.params) || ''      /*    配置参数  */
             }).then( response => {
-                // 响应
+                // 关闭loading
+                if (options.data && options.data.isShowLoading !== false) {
+                    loading = document.getElementById('ajaxLoading');
+                    loading.style.display = 'none';
+                }
+                // 注意：响应数据的格式
                 if (response.status === 200){
                     const result = response.data
                     if (result.code === 0){
-                        // 转为字符串格式
                         resolve(result)
                     } else {
                         Modal.info({
