@@ -40,7 +40,8 @@ export default class Axios {
             loading = document.getElementById('ajaxLoading');
             loading.style.display = 'block';
         }
-        const baseUrl = 'https://www.easy-mock.com/mock/5db92c42f94af26320296a42/sharedBikeapi'
+        //  使用http://rap2.taobao.org/ 模拟数据
+        const baseUrl = 'http://rap2api.taobao.org/app/mock/235356/sharedbikes'
         return new Promise((resolve, reject) => {
             axios({
                 url: options.url,

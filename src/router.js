@@ -40,7 +40,7 @@ export default class HRouter extends Component{
                         <Route path='/login' component={Login} />
 
                         {/* 不能将path='/' 放在第一个，否则永远只匹配这一个，只能将其放在最后一个 */}
-                        <Route path='/' render={()=>
+                        <Route path='/' render={ () =>
                             <Admin>
                                 <Switch>
                                     <Redirect exact from='/' to='/home'/>        {/*  从根目录进去，直接跳转到首页 */}

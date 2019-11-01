@@ -7,7 +7,8 @@ export default class BasicTable extends Component{
         // 初始数据为空数组
         dataSource: [],
         dataSource2: [],
-        user: {},
+        selectedRowKeys: [],
+        selectedRows:{},
     }
 
 
@@ -133,22 +134,25 @@ export default class BasicTable extends Component{
         }).then( res => {
             if (res.code === 0){
                 this.setState({
-                    dataSource2: res.result.data
+                    dataSource2: res.data.user
                 })
             }
         })
     }
 
-    onRow = (user) => {
-        return {
-            onClick: event => {
-                console.log('选中该行的数据', event)
-                this.setState({user})
-            }
-        }
+
+    // 传入两个参数
+    onSelectChange = ( selectedRowKeys, selectedRows) => {
+        console.log('selectedRowKeys changed: ', selectedRowKeys, selectedRows);
+        this.setState({
+            selectedRowKeys,
+            selectedRows
+        })
     }
 
-    onRowClick = (record,index)=>{
+
+
+    onRow1 = (record,index)=>{
         // index可以是一个数组
         let selectKey = [index];
         Modal.info({
@@ -163,12 +167,11 @@ export default class BasicTable extends Component{
 
 
     render() {
-        const {dataSource, dataSource2} = this.state
-
-        const selectedRowKeys = this.state.selectedRowKeys;
+        const {dataSource, dataSource2, selectedRowKeys} = this.state
         const rowSelection1 = {
-            type:'radio', /*   一旦设置radio， 则右上角为灰色    */
-            selectedRowKeys
+            type:'radio',                       /*   一旦设置radio， 则右上角为灰色    */
+            selectedRowKeys,
+            onChange: this.onSelectChange,     /*  选中某个radio圆圈， 执行的回调函数    */
         }
 
         //  配置表格是否有 选择 功能
@@ -195,13 +198,31 @@ export default class BasicTable extends Component{
                     />
                 </Card>
 
-                <Card title='Mock数据（单选radio）' className='card-wrap'>
+                <Card title='Mock数据（单选radio操作）' className='card-wrap'>
                     <Table
                         bordered
                         rowKey='id'
                         dataSource={dataSource2}
                         columns={this.columns}
-                        rowSelection={rowSelection1}   /*  配置  表格的行 是否可进行选择  */
+                        rowSelection={rowSelection1}     /*  配置表格的行是否可进行单选操作  */
+                        onRow={(record,index) => {       /*  点击某一行   */
+                            return {
+                                onClick:() => {
+                                    this.onRow1(record,index);
+                                }
+                            }
+                        }}
+                    />
+                </Card>
+
+
+                <Card title='Mock数据（多选checkbox操作）' className='card-wrap'>
+                    <Table
+                        bordered
+                        rowKey='id'
+                        dataSource={dataSource2}
+                        columns={this.columns}
+                        rowSelection={rowSelection2}   /*  配置表格的行是否可进行 多行选择操作  */
                         onRow={(record,index) => {
                             return {
                                 onClick:() => {
@@ -212,21 +233,20 @@ export default class BasicTable extends Component{
                     />
                 </Card>
 
-
-                <Card title='Mock数据（多选checkbox）' className='card-wrap'>
+                <Card title='Mock数据（分页功能 [统一分页样式] ）' className='card-wrap'>
                     <Table
                         bordered
                         rowKey='id'
                         dataSource={dataSource2}
                         columns={this.columns}
-                        rowSelection={rowSelection2}   /*  配置  表格的行 是否可进行选择  */
-                        onRow={(record,index) => {
+                        rowSelection={rowSelection1}     /*  配置表格的行是否可进行单选操作  */
+                        onRow={(record,index) => {       /*  点击某一行   */
                             return {
                                 onClick:() => {
-                                    this.onRowClick(record,index);
+                                    this.onRow1(record,index);
                                 }
                             }
-                        }}            /*  点击某一行   */
+                        }}
                     />
                 </Card>
             </div>
