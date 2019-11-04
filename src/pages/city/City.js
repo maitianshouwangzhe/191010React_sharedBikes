@@ -49,20 +49,16 @@ export default class City extends Component{
             {
                 title: '城市管理员',
                 dataIndex: 'city_admins',
-                render(arr){                             /*    render不能渲染一个对象或者一个数组，必须拆分          */
-                    return arr.map((item)=>{
-                        return item.user_name
-                    }).join(',')
-                }
+                render:  ( arr ) => arr.map( item => item.user_name).join('、')        /*  render不能渲染一个对象或者一个数组，必须拆分, 并且用符号、连接  */
             },
             {
                 title: '城市开通时间',
-                dataIndex: 'open_time'
+                dataIndex: 'open_time',
             },
             {
                 title: '操作时间',
                 dataIndex: 'update_time',
-                render: formatDate,
+                render: (update_time) => formatDate(update_time * 1),
             },
             {
                 title: '操作人',
@@ -84,7 +80,7 @@ export default class City extends Component{
             },
         }).then( (result) => {
             this.setState({
-                list: result.data,
+                list: result.data.data_list,
             })
         })
     }

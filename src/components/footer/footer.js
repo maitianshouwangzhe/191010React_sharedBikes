@@ -6,7 +6,7 @@ export default class Footer extends Component{
     render() {
         return (
             <div className='footer'>
-                <span>Copyright&copy; 共享单车后台项目管理部</span>
+                <span>Copyright&copy; 后台管理</span>
             </div>
         )
     }

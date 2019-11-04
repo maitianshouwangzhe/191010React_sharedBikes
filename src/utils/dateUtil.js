@@ -5,7 +5,7 @@
 // 格式化日期和时间的函数工具模块
 export function formatDate(time) {
     if (!time) return ''
-    // new Date() 的结果为  Sun Oct 06 2019 09:09:34 GMT+0800 (中国标准时间)
+    // new Date(time) 的结果根据时间戳，返回的日期格式为： Sun Oct 06 2019 09:09:34 GMT+0800 (中国标准时间)
     let date = new Date(time)
     let year = date.getFullYear()
     let month = date.getMonth() + 1
