@@ -427,9 +427,9 @@ export default class SeniorTable extends Component{
         ]
     }
 
-    confirm=(e)=> {
-        console.log(e);
-        message.success('删除成功')
+    confirm=(user)=> {
+        console.log(user);
+        message.success(`成功删除用户：${user.userName}`)
     }
 
     cancel=(e)=> {

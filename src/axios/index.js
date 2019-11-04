@@ -61,8 +61,8 @@ export default class Axios {
                     if (result.code === 0){
                         resolve(result)
                     } else {
-                        Modal.info({
-                            title:'提示',
+                        Modal.error({
+                            title:'发送请求失败',
                             content: result.msg
                         })
                     }
