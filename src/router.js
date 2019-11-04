@@ -17,6 +17,7 @@ import LoginAdmin from "./pages/form-admin/login-admin/login-admin";
 import RegisterAdmin from "./pages/form-admin/register-admin/register-admin";
 import BasicTable from "./pages/table-admin/basic-table/basic-table";
 import SeniorTable from "./pages/table-admin/senior-table/senior-table";
+import SeniorTable2 from "./pages/table-admin/senior-table/senior-table2";
 import RichTextEditor from "./pages/rich-text-editor/RichTextEditor";
 import City from "./pages/city/City";
 import Order from "./pages/order/Order";
