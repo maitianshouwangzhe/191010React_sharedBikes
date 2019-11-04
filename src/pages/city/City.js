@@ -14,7 +14,6 @@ export default class City extends Component{
     state={
         list:[],
         openCityModal: false,
-        isDisabled: true,
     }
 
     // 配置参数
@@ -40,7 +39,7 @@ export default class City extends Component{
             {
                 title: '营运模式',
                 dataIndex: 'op_mode',
-                render: (op_mode)=>  op_mode === 1 ? '自营' : '加盟'
+                render: (op_mode)=> op_mode  === 1 ? '自营' : '加盟'
             },
             {
                 title: '授权加盟商',
@@ -78,17 +77,19 @@ export default class City extends Component{
             data:{
                 params: {page: this.params.page}
             },
-        }).then( (result) => {
-            this.setState({
-                list: result.data.data_list,
-            })
-        })
+        }).then( result => {
+            if (result.code === 0){
+                this.setState({
+                    list: result.data.data_list
+                })
+            }})
     }
 
 
     // 开通城市提交
     openCitySubmit = () => {
         // 发送请求
+        // TODO
         this.setState({openCityModal: false})
     }
 
@@ -115,7 +116,7 @@ export default class City extends Component{
                         onCancel={ () => this.setState({openCityModal:false}) }
                         onOk={this.openCitySubmit}
                     >
-                        <OpenCityForm />
+                        <OpenCityForm />    {/*    TODO  收集表单数据      */}
                     </Modal>
                 </div>
             </div>
