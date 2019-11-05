@@ -2,18 +2,18 @@
 
 // 统一风格的分页标识
 
-// 请求得到的数据
-export function paginationUtil(data1, callback) {
+// 视频7-7讲解  自定义分页
+
+// 要保持数据的格式完全一致，才能使得读取这些数据
+export function paginationUtil(result, callback) {
     return {
         onChange: (current) => {
             callback(current)
         },
-        current: data1.data.page,
-        pageSize: data1.data.page_size,
-        total: data1.data.total,
-        showTotal: () => {
-            return `共${data1.data.total}条数据`
-        },
+        current: result.data.page,
+        pageSize: result.data.page_size,
+        total: result.data.total,
+        showTotal: () => { return `共${result.data.total}条数据` },
         showQuickJumper: true,
     }
 }

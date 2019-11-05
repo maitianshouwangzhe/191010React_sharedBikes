@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import {Button, Card, Modal, Table} from "antd"
+import {Button, Card, message, Modal, Table} from "antd"
 
 import axios from '../../axios'
 import {formatDate} from "../../utils/dateUtil"
@@ -14,9 +14,12 @@ export default class City extends Component{
     state={
         list:[],
         openCityModal: false,
+        // 首先定义pagination为一个空对象，然后使用自定义的paginationUtil
+        pagination: {},
     }
 
     // 配置参数
+    // 不放在state里面，这是由于state一旦发生变化，则render渲染页面，
     params = {
         page: 1
     }
@@ -53,6 +56,7 @@ export default class City extends Component{
             {
                 title: '城市开通时间',
                 dataIndex: 'open_time',
+                render: (open_time) => ('时间戳：' + open_time)
             },
             {
                 title: '操作时间',
@@ -72,25 +76,45 @@ export default class City extends Component{
 
     // 请求接口
     reqList = () => {
+        // this 作用域
         axios.ajax({
             url:'/city',
-            data:{
-                params: {page: this.params.page}
-            },
+            data:{  params: {page: this.params.page} } ,
         }).then( result => {
             if (result.code === 0){
                 this.setState({
-                    list: result.data.data_list
+                    list: result.data.list,
+                    pagination: paginationUtil(result, (current) => {
+                        // 将当前页保存给page
+                        this.params.page = current
+                        this.reqList()
+                    })
                 })
             }})
     }
 
 
-    // 开通城市提交
+    // 开通城市请求
     openCitySubmit = () => {
-        // 发送请求
-        // TODO
-        this.setState({openCityModal: false})
+        // 使用this.OpenCityForm.props.form就得到了form对象
+        // 得到子组件的form对象，就可以获得子组件中form表单的输入值
+        this.OpenCityForm.props.form.validateFields((error, values)=>{
+            if (!error){
+                console.log('values', values)
+                axios.ajax({
+                    url: '/city/open',
+                    data:{  params: values}
+                }).then(result => {
+                    if (result.code === 0){
+                        message.success(result.msg)
+                        this.setState({openCityModal: false})
+                        // 重新查询数据
+                        this.reqList()
+                    }
+                })
+            }
+        })
+
     }
 
 
@@ -116,7 +140,7 @@ export default class City extends Component{
                         onCancel={ () => this.setState({openCityModal:false}) }
                         onOk={this.openCitySubmit}
                     >
-                        <OpenCityForm />    {/*    TODO  收集表单数据      */}
+                        <OpenCityForm  wrappedComponentRef={ (inst) => this.OpenCityForm = inst}  />      {/*      在wrappedComponentRef的基础上， 使用this.OpenCityForm.props.form就得到了form对象    */}
                     </Modal>
                 </div>
             </div>

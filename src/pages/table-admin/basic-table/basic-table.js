@@ -136,6 +136,7 @@ export default class BasicTable extends Component{
                 this.setState({
                     dataSource2: res.data.user,
                     pagination: paginationUtil(res, (current) => {
+                        // 将当前页保存给page
                         this.params.page = current
                         this.request()
                     })
